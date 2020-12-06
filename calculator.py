@@ -98,59 +98,10 @@ QuitButton = tk.Button(
                     height = high
                     )
 
-button1 = tk.Button(root,
-                text='1',
-                command = lambda: press(1),
-                height = high,
-                width = wide) 
+def getButton(num):
+    return tk.Button(root, text = str(num), command = lambda: press(num), height = high, width = wide )
 
-button2 = tk.Button(root,
-                text='2',
-                command = lambda: press(2),
-                height = high,
-                width = wide) 
-button3 = tk.Button(root,
-                text='3',
-                command = lambda: press(3),
-                height = high,
-                width = wide) 
-    
-button4 = tk.Button(root,
-                text='4',
-                command = lambda: press(4),
-                height = high,
-                width = wide) 
-    
-button5 = tk.Button(root,
-                text='5',
-                command = lambda: press(5),
-                height = high,
-                width = wide) 
-    
-button6 = tk.Button(root,
-                text='6',
-                command = lambda: press(6),
-                height = high,
-                width = wide) 
-    
-button7 = tk.Button(root,
-                text='7',
-                command = lambda: press(7),
-                height = high,
-                width = wide) 
-    
-button8 = tk.Button(root,
-                text='8',
-                command = lambda: press(8),
-                height = high,
-                width = wide) 
-    
-button9 = tk.Button(root,
-                text='9',
-                command = lambda: press(9),
-                height = high,
-                width = wide)
-    
+numberButtons = [getButton(i) for i in range(0, 10)]
 
 buttonEqual = tk.Button(root,
                     width = wide,
@@ -230,18 +181,8 @@ buttonReset = tk.Button(root,
                     command = reset
                     )
 
-
-                    
-button0.grid(row = 4, column = 2)
-button1.grid(row = 1, column = 1)
-button2.grid(row = 1, column = 2)
-button3.grid(row = 1, column = 3)
-button4.grid(row = 2, column = 1)
-button5.grid(row = 2, column = 2)
-button6.grid(row = 2, column = 3)
-button7.grid(row = 3, column = 1)
-button8.grid(row = 3, column = 2)
-button9.grid(row = 3, column = 3)
+numberButtons[0].grid(row = 4, column = 2)
+for i in range(1, 10): numberButtons[i].grid(row = int((i+2)//3), column = (i%3) if(i%3 != 0) else 3)
 
 buttonEqual.grid(row = 4, column = 3)
 buttonPlus.grid(row = 1, column = 4)
