@@ -11,16 +11,16 @@ elif(DBG==1): print2 = lambda *args, **kwargs : print(*args, **kwargs)
 elif(DBG==2): print3 = lambda *args, **kwargs : print(*args, **kwargs)
 
 #fns & vars
-x = ''
-a = 0
-b = 0
-sign1 = ''
-wide = 6
-high = 3
+x, sign1, a, b = '', '',  0, 0
+wide, high = 6, 3
 signs = ['+', '-']
+expression = ''
 
 def quitapp():
     root.destroy()
+
+def buildExpression(char):
+    expression += char
 
 def press(num):
     global x
@@ -70,12 +70,8 @@ def reset():
 
 def equal():
     global sign1, x, a, b
-    
-    if x.find('.') == -1:
-        b = int(x)
 
-    else:
-        b = float(x)
+    b = int(x) if(x.find('.') == -1) else float(x)
     
     dict1 = {'+': a + b, '-': a - b, '*': a * b, '/': a / b, '^': a ** b, '%': b / 100}
     for i in dict1:
@@ -88,6 +84,11 @@ root  = tk.Tk()
 root.geometry('400x400')
 root.title('calculator') 
 
+def getButton(num):
+    return tk.Button(root, text = str(num), command = lambda: press(num), height = high, width = wide )
+
+numberButtons = [getButton(i) for i in range(0, 10)]
+
 #buttons
 QuitButton = tk.Button(
                     root,
@@ -97,11 +98,6 @@ QuitButton = tk.Button(
                     width = wide,
                     height = high
                     )
-
-def getButton(num):
-    return tk.Button(root, text = str(num), command = lambda: press(num), height = high, width = wide )
-
-numberButtons = [getButton(i) for i in range(0, 10)]
 
 buttonEqual = tk.Button(root,
                     width = wide,
@@ -181,8 +177,8 @@ buttonReset = tk.Button(root,
                     command = reset
                     )
 
-numberButtons[0].grid(row = 4, column = 2)
 for i in range(1, 10): numberButtons[i].grid(row = int((i+2)//3), column = (i%3) if(i%3 != 0) else 3)
+numberButtons[0].grid(row = 4, column = 2)
 
 buttonEqual.grid(row = 4, column = 3)
 buttonPlus.grid(row = 1, column = 4)
