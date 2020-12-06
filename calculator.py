@@ -3,6 +3,13 @@
 import tkinter as tk
 import tkinter.font as tkf
 
+# ! TODO
+#debug related stuff
+DBG = 0 # 0 - nothing, 1 - something, 2 - detailed
+if(DBG==0): print1 = lambda *args, **kwargs : print(*args, **kwargs)
+elif(DBG==1): print2 = lambda *args, **kwargs : print(*args, **kwargs)
+elif(DBG==2): print3 = lambda *args, **kwargs : print(*args, **kwargs)
+
 #fns & vars
 x = ''
 a = 0
@@ -18,56 +25,43 @@ def quitapp():
 def press(num):
     global x
     
-    x = x + str(num)
+    x += str(num)
     print(x)
 
 def point():
     global x
-    x = x + '.'
+    x += '.'
 
 def sign(sign):
-    global x
-    global sign1 
-    global a
-    
-    if x.find('.') == -1:
-        a = int(x)
+    global x, sign1, a
 
-    else:
-        a = float(x)
+    a = int(x) if(x.find('.') == -1) else float(x)
         
     x = ''
     sign1 = sign
-    print(sign)
+    print1(sign)
 
 def percent():
-    global x
+    global x, sign1
     y = ''
-    global sign1
     sign1 = '%'
-    if x.find('.') == -1:
-        b = int(x)
 
-    else:
-        b = float(x)
+    b = int(x) if(x.find('.') == -1) else float(x)
+    
     y = x + '%'
-    print(y)
+    print1(y)
     
     
     
 def delete():
     global x
-    listx = list(x)
-    listx = listx[:-1]
+    listx = (list(x))[:-1]
     x = ''.join(listx)
     
-    print(x)
+    print1(x)
 
 def reset():
-    global x
-    global a
-    global b
-    global sign1
+    global x, a, b, sign1
     x = ''
     a = 0
     b = 0
@@ -75,10 +69,7 @@ def reset():
     print('the calculator has been reset.')
 
 def equal():
-    global sign1
-    global x
-    global a
-    global b
+    global sign1, x, a, b
     
     if x.find('.') == -1:
         b = int(x)
