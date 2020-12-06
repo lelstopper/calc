@@ -98,22 +98,6 @@ QuitButton = tk.Button(
                     height = high
                     )
 
-'''col = 1
-
-listNumbers = [1,1,2,3,4,5,6,7,8,9]
-for i in range(1,10):
-    b = tk.Button(root,
-                  text = str(i),
-                  command = lambda: press(int(b.cget('text'))),
-                  width = wide,
-                  height = high,
-                  )
-    
-    b.grid(row = ((i-1) % 3)+ 1, column = col)
-    if i % 3 == 0:
-        col += 1'''
-
-
 button1 = tk.Button(root,
                 text='1',
                 command = lambda: press(1),
