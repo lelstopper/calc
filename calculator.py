@@ -1,7 +1,5 @@
-
-#import
-import tkinter as tk
-import tkinter.font as tkf
+import tkinter as tk, tkinter.font as tkf
+import decimal
 
 # ! TODO
 #debug related stuff
@@ -21,7 +19,9 @@ def buildExpression(char):
     global expression
     if(len(expression) > 0):
         if(char=='.' and not expression[-1].isdigit()): return None
-        if(char.isdigit() and expression[-1] in "()"): return None
+        if(not char.isdigit() and expression[-1] == '.'): return None
+        if(char.isdigit() and expression[-1] == ')'): return None
+        if(char == '(' and expression[-1].isdigit()): return None
     expression += char
     print(expression)
 
@@ -33,11 +33,19 @@ def clearExpression():
 def delExpression():
     global expression
     expression = expression[:len(expression)-1]
+    if(expression[-1] == '.'): expression = expression[:len(expression)-1]
     print(expression)
 
 def execute():
     global expression
-    expression = str(eval(expression))
+    try:
+        expression = str(eval(expression))
+    except:
+        print("Syntax Error!")
+        return None
+    expression = expression.split('.')
+    if(len(expression) == 1 or int(expression[1])==0): expression = expression[0]
+    else : expression = expression[0] + '.' + expression[1]
     print(expression)
 
 def getButton(char, callback):
@@ -48,7 +56,7 @@ root  = tk.Tk()
 root.geometry('400x400')
 root.title('calculator') 
 
-numberButtons = [(lambda num : tk.Button(root, text = str(num), command = lambda: buildExpression(str(num)), height = high, width = wide ))(i) for i in range(0, 10)]
+numberButtons = [(lambda num : tk.Button(root, text = num, command = lambda: buildExpression(num), height = high, width = wide ))(str(i)) for i in range(0, 10)]
 
 # Simple arithmetic functions
 buttonEqual = getButton('=', execute)
@@ -56,9 +64,9 @@ buttonPlus = getButton('+', lambda : buildExpression('+'))
 buttonMinus = getButton('-', lambda : buildExpression('-'))
 buttonProd = getButton('*', lambda : buildExpression('*'))
 buttonDiv = getButton('/', lambda : buildExpression('/'))
-buttonPow = getButton('^', lambda : buildExpression('^'))
+buttonPow = getButton('^', lambda : buildExpression('**'))
 buttonDec = getButton('.', lambda : buildExpression('.'))
-buttonPerCent = getButton('%', lambda : buildExpression('%'))
+buttonPerCent = getButton('%', lambda : buildExpression('*0.01'))
 
 #! TODO
 #log
