@@ -14,110 +14,73 @@ elif(DBG==2): print2 = lambda *args, **kwargs : print(*args, **kwargs)
 elif(DBG==3): print3 = lambda *args, **kwargs : print(*args, **kwargs)
 
 #fns & vars
-x, sign1, a, b = '', '',  0, 0
 wide, high = 6, 3
-signs = ['+', '-']
 expression = ''
 
 def buildExpression(char):
+    global expression
+    if(len(expression) > 0):
+        if(char=='.' and not expression[-1].isdigit()): return None
+        if(char.isdigit() and expression[-1] in "()"): return None
     expression += char
+    print(expression)
 
-def press(num):
-    global x
-    
-    x += str(num)
-    print1(x)
+def clearExpression():
+    global expression
+    expression = ""
+    print("All Cleared!")
 
-def point():
-    global x
-    x += '.'
+def delExpression():
+    global expression
+    expression = expression[:len(expression)-1]
+    print(expression)
 
-def sign(sign):
-    global x, sign1, a
+def execute():
+    global expression
+    expression = str(eval(expression))
+    print(expression)
 
-    a = int(x) if(x.find('.') == -1) else float(x)
-        
-    x = ''
-    sign1 = sign
-    print1(sign)
+def getButton(char, callback):
+    return tk.Button(root, width=wide, height=high, text=char, command=callback)
 
-def percent():
-    global x, sign1
-    y = ''
-    sign1 = '%'
-
-    b = int(x) if(x.find('.') == -1) else float(x)
-    
-    y = x + '%'
-    print1(y)
-    
-def delete():
-    global x
-    listx = (list(x))[:-1]
-    x = ''.join(listx)
-    
-    print1(x)
-
-def reset():
-    global x, a, b, sign1
-    x = ''
-    a = 0
-    b = 0
-    sign1 = ''
-    print('the calculator has been reset.')
-
-def equal():
-    global sign1, x, a, b
-
-    b = int(x) if(x.find('.') == -1) else float(x)
-    
-    dict1 = {'+': a + b, '-': a - b, '*': a * b, '/': a / b, '^': a ** b, '%': b / 100}
-    for i in dict1:
-        if i == sign1:
-            print('= ' + str(dict1[i]))
-            x = str(dict1[i])
-    
 #window
 root  = tk.Tk()
 root.geometry('400x400')
 root.title('calculator') 
 
-numberButtons = [(lambda num : tk.Button(root, text = str(num), command = lambda: press(num), height = high, width = wide ))(i) for i in range(0, 10)]
-
-def getButton(char, callback):
-    return tk.Button(root, width=wide, height=high, text=char, command=callback)
+numberButtons = [(lambda num : tk.Button(root, text = str(num), command = lambda: buildExpression(str(num)), height = high, width = wide ))(i) for i in range(0, 10)]
 
 # Simple arithmetic functions
-buttonEqual = getButton('=', equal)
-buttonPlus = getButton('+', lambda : sign('+'))
-buttonMinus = getButton('-', lambda : sign('-'))
-buttonProd = getButton('*', lambda : sign('*'))
-buttonDiv = getButton('/', lambda : sign('/'))
-buttonPow = getButton('^', lambda : sign('^'))
-buttonDec = getButton('.', lambda : point)
-buttonPerCent = getButton('%', lambda : percent)
+buttonEqual = getButton('=', execute)
+buttonPlus = getButton('+', lambda : buildExpression('+'))
+buttonMinus = getButton('-', lambda : buildExpression('-'))
+buttonProd = getButton('*', lambda : buildExpression('*'))
+buttonDiv = getButton('/', lambda : buildExpression('/'))
+buttonPow = getButton('^', lambda : buildExpression('^'))
+buttonDec = getButton('.', lambda : buildExpression('.'))
+buttonPerCent = getButton('%', lambda : buildExpression('%'))
 
 #! TODO
 #log
 #trig functions
 '''
-buttonPlus = getButton('sin', lambda : sign('+'))
-buttonPlus = getButton('cos', lambda : sign('+'))
-buttonPlus = getButton('tan', lambda : sign('+'))
-buttonPlus = getButton('sec', lambda : sign('+'))
-buttonPlus = getButton('csec', lambda : sign('+'))
-buttonPlus = getButton('cot', lambda : sign('+'))
+buttonSin = getButton('sin', lambda : sign('+'))
+buttonCos = getButton('cos', lambda : sign('+'))
+buttonTan = getButton('tan', lambda : sign('+'))
+buttonSec = getButton('sec', lambda : sign('+'))
+buttonCosec = getButton('csec', lambda : sign('+'))
+buttonCot = getButton('cot', lambda : sign('+'))
 '''
 #bitwise Functions
 '''
-buttonPlus = getButton('not', lambda : sign('+'))
-buttonPlus = getButton('and', lambda : sign('+'))
-buttonPlus = getButton('or', lambda : sign('+'))
-buttonPlus = getButton('xor', lambda : sign('+'))
+buttonNot = getButton('not', lambda : sign('+'))
+buttonAnd = getButton('and', lambda : sign('+'))
+buttonOr = getButton('or', lambda : sign('+'))
+buttonXor = getButton('xor', lambda : sign('+'))
 '''
 
-buttonDelete = getButton('CE', delete)
-buttonReset = getButton('AC', reset)
+buttonDelete = getButton('CE', delExpression)
+buttonReset = getButton('AC', clearExpression)
 
 for i in range(1, 10): numberButtons[i].grid(row = int((i+2)//3), column = 1+((i-1)%3))
 numberButtons[0].grid(row = 4, column = 2)
