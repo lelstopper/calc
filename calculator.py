@@ -18,6 +18,7 @@ elif(DBG==3): print3 = lambda *args, **kwargs : print(*args, **kwargs)
 wide, high = 6, 3
 expression = ''
 
+'''this function defines the write function for calculation in the calculator'''
 def buildExpression(char):
     global expression
     if(len(expression) > 0):
@@ -28,18 +29,21 @@ def buildExpression(char):
         
     expression += char
     output.configure (text = expression)
-    
+
+'''this function resets the writespace'''
 def clearExpression():
     global expression
     expression = ""
     output.config(text = 'All Cleared!')
 
+'''this function deletes the last character entered into the writespace'''
 def delExpression():
     global expression
     expression = expression[:len(expression)-1]
     if(expression[-1] == '.'): expression = expression[:len(expression)-1]
     output.config(text = expression)
 
+'''debug function'''
 def execute():
     global expression
     try:
@@ -53,7 +57,8 @@ def execute():
     else : expression = expression[0] + '.' + expression[1]
     
     output.configure (text = expression)
-    
+
+'''this function is to make it easier for creating the GUI interface by automating the creation of buttons'''  
 def getButton(char, callback):
     return tk.Button(root, width=wide, height=high, text=char, command=callback)
 
@@ -76,6 +81,8 @@ buttonPerCent = getButton('%', lambda : buildExpression('*0.01'))
 buttonLBrack = getButton('(', lambda: buildExpression('(') )
 buttonRBrack = getButton(')', lambda: buildExpression(')') )
 
+
+# -- TODO --
 #log
 #radians->degrees
 #trig functions
