@@ -1,3 +1,4 @@
+#imports
 import tkinter as tk, tkinter.font as tkf
 import decimal
 from math import *
@@ -14,11 +15,13 @@ if(DBG==1): print1 = lambda *args, **kwargs : print(*args, **kwargs)
 elif(DBG==2): print2 = lambda *args, **kwargs : print(*args, **kwargs)
 elif(DBG==3): print3 = lambda *args, **kwargs : print(*args, **kwargs)
 
+
 #fns & vars
 wide, high = 6, 3
 expression = ''
-
 '''this function defines the write function for calculation in the calculator'''
+
+
 def buildExpression(char):
     global expression
     if(len(expression) > 0):
@@ -30,21 +33,24 @@ def buildExpression(char):
     expression += char
     output.configure (text = expression)
 
-'''this function resets the writespace'''
 def clearExpression():
+    '''this function resets the writespace'''
+
     global expression
     expression = ""
     output.config(text = 'All Cleared!')
 
-'''this function deletes the last character entered into the writespace'''
 def delExpression():
+    '''this function deletes the last character entered into the writespace'''
+
     global expression
     expression = expression[:len(expression)-1]
     if(expression[-1] == '.'): expression = expression[:len(expression)-1]
     output.config(text = expression)
 
-'''debug function'''
 def execute():
+    '''debug function'''
+
     global expression
     try:
         expression = str(eval(expression))
@@ -58,9 +64,11 @@ def execute():
     
     output.configure (text = expression)
 
-'''this function is to make it easier for creating the GUI interface by automating the creation of buttons'''  
 def getButton(char, callback):
+    '''this function is to make it easier for creating the GUI interface by automating the creation of buttons'''  
+
     return tk.Button(root, width=wide, height=high, text=char, command=callback)
+
 
 #window
 root  = tk.Tk()
@@ -68,6 +76,7 @@ root.geometry('370x275')
 root.title('Calculator') 
 
 numberButtons = [(lambda num : tk.Button(root, text = num, command = lambda: buildExpression(num), height = high, width = wide, bg = '#aeaeae'))(str(i)) for i in range(0, 10)]
+
 
 # Simple arithmetic functions
 buttonEqual = getButton('=', execute)
